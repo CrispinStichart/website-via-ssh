@@ -38,20 +38,20 @@ func (p Post) String() string {
 }
 
 type Model struct {
-	directory string
-	posts     list.Model
-	Selected  *Post
+	directory   string
+	posts       list.Model
+	Selected    *Post
+	initialized bool
 }
 
 func New(directory string) Model {
 	m := Model{
-		directory: directory,
-		Selected:  nil,
+		directory:   directory,
+		Selected:    nil,
+		initialized: false,
 	}
-
-	// figure out how Init is supposed to work and put the IO code there
-	m.posts = list.New(getPostsFromDir(directory), list.NewDefaultDelegate(), 0, 0)
-
+	// TODO: read the posts async, and set a spinner while it's working
+	m.posts = list.New(getPostsFromDir(m.directory), list.NewDefaultDelegate(), 0, 0)
 	return m
 }
 
@@ -65,10 +65,16 @@ func getPostsFromDir(directory string) []list.Item {
 			date, err := formatting.ExtractDateFromFilename(entry.Name())
 			check(err)
 
-			// title, body, err := formatting.SplitTitleFromPost()
+			file, err := os.ReadFile(filepath.Join(directory, entry.Name()))
+			check(err)
+
+			// ToDo: write more efficient function that will return after
+			// identifying the title
+			title, _, err := formatting.SplitTitleFromPost(string(file))
+			check(err)
 
 			p := Post{
-				title: entry.Name(),
+				title: title,
 				Date:  date,
 				Path:  filepath.Join(directory, entry.Name()),
 			}
@@ -83,8 +89,9 @@ func getPostsFromDir(directory string) []list.Item {
 	return posts
 }
 
-func (m Model) Init() tea.Cmd {
+type ListReadyMsg struct{}
 
+func (m Model) Init() tea.Cmd {
 	return nil
 }
 
@@ -103,9 +110,9 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 			if ok {
 				m.Selected = &post
 			}
-			// return m, tea.Quit
 		}
 	}
+
 	var cmd tea.Cmd
 	m.posts, cmd = m.posts.Update(msg)
 	return m, cmd

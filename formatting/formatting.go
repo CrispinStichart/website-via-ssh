@@ -32,7 +32,6 @@ func SplitTitleFromPost(page string) (string, string, error) {
 	lines := strings.Split(page, "\n")
 	var frontmatterClose int
 	var title string
-	fmt.Println(strings.TrimRight(lines[3], "\r\n") == "---")
 
 	// we're assuming the frontmatter starts at line 1
 	for i, line := range lines[1:] {
