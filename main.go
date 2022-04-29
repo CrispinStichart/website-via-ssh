@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -94,6 +95,16 @@ func max(a, b int) int {
 }
 
 func main() {
+	var ssh = flag.Bool("ssh", false, "Start SSH Server")
+	flag.Parse()
+	if *ssh {
+		startSSH()
+	} else {
+		startLocal()
+	}
+}
+
+func startLocal() {
 	postsList := blog_list.NewPostsModel(BLOG)
 
 	p := tea.NewProgram(

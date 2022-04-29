@@ -15,6 +15,6 @@ No SSH yet.
 It displays all my blog posts, allows you to select and read individual posts, and then back out to the list of posts again.
 
 to do:
- - [ ] integrate Wish for SSH support
+ - [X] integrate Wish for SSH support
  - [ ] parse the titles for the posts in the posts list
  - [ ] sort the posts
