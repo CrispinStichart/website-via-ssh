@@ -1,0 +1,5 @@
+# the binary
+website-via-ssh
+
+# running the binary produces this folder to store keys
+.ssh/
