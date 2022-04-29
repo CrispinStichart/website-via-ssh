@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"time"
 
 	"github.com/CrispinStichart/website-via-ssh/formatting"
@@ -26,22 +27,24 @@ type Post struct {
 	Path  string
 }
 
+// tea.Item Interface
 func (p Post) Title() string       { return p.title }
 func (p Post) Description() string { return formatting.PrettyDate(p.Date) }
 func (p Post) FilterValue() string { return p.title }
 
+// stringer interface
 func (p Post) String() string {
 	return fmt.Sprintf("%v | %v", p.Date, p.title)
 }
 
-type PostsModel struct {
+type Model struct {
 	directory string
 	posts     list.Model
 	Selected  *Post
 }
 
-func NewPostsModel(directory string) PostsModel {
-	m := PostsModel{
+func New(directory string) Model {
+	m := Model{
 		directory: directory,
 		Selected:  nil,
 	}
@@ -73,15 +76,19 @@ func getPostsFromDir(directory string) []list.Item {
 		}
 	}
 
+	sort.Slice(posts, func(i, j int) bool {
+		return posts[i].(Post).Date.After(posts[j].(Post).Date)
+	})
+
 	return posts
 }
 
-func (m PostsModel) Init() tea.Cmd {
+func (m Model) Init() tea.Cmd {
 
 	return nil
 }
 
-func (m PostsModel) Update(msg tea.Msg) (PostsModel, tea.Cmd) {
+func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		h, v := docStyle.GetFrameSize()
@@ -105,6 +112,6 @@ func (m PostsModel) Update(msg tea.Msg) (PostsModel, tea.Cmd) {
 
 }
 
-func (m PostsModel) View() string {
+func (m Model) View() string {
 	return docStyle.Render(m.posts.View())
 }

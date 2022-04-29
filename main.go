@@ -15,7 +15,7 @@ const BLOG = "/home/critter/programming/CrispinStichart.github.io/_posts/"
 const useHighPerformanceRenderer = false
 
 type model struct {
-	postsList   blog_list.PostsModel
+	postsList   blog_list.Model
 	currentPost *blog.Model
 	ready       bool
 	height      int
@@ -105,7 +105,7 @@ func main() {
 }
 
 func startLocal() {
-	postsList := blog_list.NewPostsModel(BLOG)
+	postsList := blog_list.New(BLOG)
 
 	p := tea.NewProgram(
 		model{postsList: postsList},

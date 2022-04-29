@@ -62,7 +62,7 @@ func teaHandler(s ssh.Session) (tea.Model, []tea.ProgramOption) {
 		return nil, nil
 	}
 	m := model{
-		postsList: blog_list.NewPostsModel(BLOG),
+		postsList: blog_list.New(BLOG),
 	}
 	return m, []tea.ProgramOption{tea.WithAltScreen()}
 }

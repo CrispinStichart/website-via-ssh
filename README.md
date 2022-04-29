@@ -17,4 +17,4 @@ It displays all my blog posts, allows you to select and read individual posts, a
 to do:
  - [X] integrate Wish for SSH support
  - [ ] parse the titles for the posts in the posts list
- - [ ] sort the posts
+ - [X] sort the posts
