@@ -17,6 +17,8 @@ func check(e error) {
 	}
 }
 
+// Glamourize renders the given string with the Glamour
+// markdown renderer.
 func Glamourize(content string, width int) string {
 	r, err := glamour.NewTermRenderer(
 		glamour.WithStandardStyle("dark"),
@@ -28,6 +30,9 @@ func Glamourize(content string, width int) string {
 	return out
 }
 
+// SplitTitleFromPost reads the frontmatter of a blogpost and
+// parses the title, the returns it alongside the rest of the post
+// without frontmatter.
 func SplitTitleFromPost(page string) (string, string, error) {
 	lines := strings.Split(page, "\n")
 	var frontmatterClose int
@@ -53,6 +58,9 @@ func SplitTitleFromPost(page string) (string, string, error) {
 	return title, body, nil
 }
 
+// ExtractDateFromFilename parses a filename and extracts the date from
+// it. This assumes the filename starts with the date, as Jekyll requires
+// for blog posts. See: https://jekyllrb.com/docs/posts/
 func ExtractDateFromFilename(filename string) (time.Time, error) {
 	r := regexp.MustCompile(`(\d\d\d\d-\d\d-\d\d).*`)
 	match := r.FindStringSubmatch(filename)
@@ -66,6 +74,8 @@ func ExtractDateFromFilename(filename string) (time.Time, error) {
 	return d, nil
 }
 
+// PrettyDate formats a time string to look like
+// "December 22nd", 2018.
 func PrettyDate(date time.Time) string {
 	day, err := strconv.Atoi(date.Format("2"))
 	check(err)

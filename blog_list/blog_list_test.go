@@ -1,11 +1,10 @@
 package blog_list
 
 import (
-	"fmt"
 	"testing"
 )
 
-const BLOG = "/home/critter/programming/CrispinStichart.github.io/_posts/"
+// const BLOG = "/home/critter/programming/CrispinStichart.github.io/_posts/"
 
 func testCheck(t *testing.T, err error) {
 	if err != nil {
@@ -13,8 +12,8 @@ func testCheck(t *testing.T, err error) {
 	}
 }
 
-func TestGetPostsFromDir(t *testing.T) {
-	for _, entry := range getPostsFromDir(BLOG) {
-		fmt.Println(entry)
-	}
-}
+// func TestGetPostsFromDir(t *testing.T) {
+// 	for _, entry := range getPostsFromDir(BLOG) {
+// 		fmt.Println(entry)
+// 	}
+// }

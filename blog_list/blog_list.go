@@ -27,7 +27,7 @@ type Post struct {
 	Path  string
 }
 
-// tea.Item Interface
+// tea.Item interface
 func (p Post) Title() string       { return p.title }
 func (p Post) Description() string { return formatting.PrettyDate(p.Date) }
 func (p Post) FilterValue() string { return p.title }
@@ -55,6 +55,8 @@ func New(directory string) Model {
 	return m
 }
 
+// Finds all markdown files in the given directory, reads them to extract
+// the post title, orders the list by date, and returns the list.
 func getPostsFromDir(directory string) []list.Item {
 	c, err := os.ReadDir(directory)
 	check(err)
@@ -68,7 +70,7 @@ func getPostsFromDir(directory string) []list.Item {
 			file, err := os.ReadFile(filepath.Join(directory, entry.Name()))
 			check(err)
 
-			// ToDo: write more efficient function that will return after
+			// TODO: write more efficient function that will return after
 			// identifying the title
 			title, _, err := formatting.SplitTitleFromPost(string(file))
 			check(err)
@@ -88,8 +90,6 @@ func getPostsFromDir(directory string) []list.Item {
 
 	return posts
 }
-
-type ListReadyMsg struct{}
 
 func (m Model) Init() tea.Cmd {
 	return nil

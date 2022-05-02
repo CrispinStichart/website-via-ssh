@@ -17,9 +17,13 @@ import (
 	"github.com/gliderlabs/ssh"
 )
 
+// TODO: use configuration file or command-line parameters
+// for this.
 const host = "localhost"
 const port = 23234
 
+// This was mostly just copy and pasted from the example at
+// https://github.com/charmbracelet/wish/blob/main/examples/bubbletea/main.go
 func startSSH() {
 	s, err := wish.NewServer(
 		wish.WithAddress(fmt.Sprintf("%s:%d", host, port)),

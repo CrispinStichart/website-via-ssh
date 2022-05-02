@@ -22,6 +22,8 @@ type model struct {
 	width       int
 }
 
+// Future improvements: perhaps I should async read the posts
+// here instead of in the blog_list component?
 func (m model) Init() tea.Cmd {
 	return nil
 }
@@ -36,15 +38,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.WindowSizeMsg:
 		if !m.ready {
-			// useless?
+			// Mostly useless, other than for the "initializing" text.
 			m.ready = true
 		}
 
-		// useless because we're passing the msg through?
-		// won't be useless if we display other components alongside
-		// eachother.
+		// Currently Useless because we're passing the msg through to other
+		// fullscreen components, but it won't be useless if we display
+		// components alongside eachother, which I think I want to do...
 		m.width = msg.Width
 		m.height = msg.Height
+
+	// Sent by the blog component when the "back" action is triggerd
 	case blog.GoBackMsg:
 		m.currentPost = nil
 		m.postsList.Selected = nil
@@ -80,18 +84,10 @@ func (m model) View() string {
 	}
 
 	if m.currentPost == nil {
-
 		return m.postsList.View()
 	}
 
 	return fmt.Sprint(m.currentPost.View())
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
 
 func main() {
